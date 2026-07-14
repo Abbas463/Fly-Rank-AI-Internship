@@ -21,6 +21,7 @@ class TaskUpdate(BaseModel):
 
 @app.get("/")
 def read_root():
+    """Returns API information"""
     return {
         "name": "Task API",
         "version": "1.0",
@@ -29,14 +30,17 @@ def read_root():
 
 @app.get("/health")
 def health_check():
+    """Health check endpoint"""
     return {"status": "ok"}
 
 @app.get("/tasks")
 def get_tasks():
+    """List all tasks"""
     return tasks
 
 @app.get("/tasks/{task_id}")
 def get_task(task_id: int):
+    """Get a single task by ID"""
     for task in tasks:
         if task["id"] == task_id:
             return task
@@ -44,6 +48,7 @@ def get_task(task_id: int):
 
 @app.post("/tasks", status_code=201)
 def create_task(task: TaskCreate):
+    """Create a new task"""
     global next_id
     if not task.title or task.title.strip() == "":
         raise HTTPException(status_code=400, detail="Title is required")
@@ -54,6 +59,7 @@ def create_task(task: TaskCreate):
 
 @app.put("/tasks/{task_id}")
 def update_task(task_id: int, task_update: TaskUpdate):
+    """Update an existing task"""
     for task in tasks:
         if task["id"] == task_id:
             if task_update.title is not None:
@@ -67,6 +73,7 @@ def update_task(task_id: int, task_update: TaskUpdate):
 
 @app.delete("/tasks/{task_id}", status_code=204)
 def delete_task(task_id: int):
+    """Delete a task"""
     for i, task in enumerate(tasks):
         if task["id"] == task_id:
             tasks.pop(i)
