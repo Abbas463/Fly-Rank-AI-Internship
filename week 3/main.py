@@ -1,12 +1,12 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import Optional
-from repository import PostgresTaskRepository, TaskCreate, TaskUpdate
+from repository import SQLiteTaskRepository, TaskCreate, TaskUpdate
 
 app = FastAPI()
 
-# Postgres repository
-repository = PostgresTaskRepository()
+# SQLite repository
+repository = SQLiteTaskRepository()
 
 @app.get("/")
 def read_root():
